@@ -6,12 +6,12 @@ import * as Location from "expo-location";
 import { Icon } from "react-native-elements";
 import metroJson from "./json/metro.json";
 import ubikeJson from "./json/ubike.json";
-
+import {VictoryPie} from "victory-native";
 import axios from "axios";
 
 const UBIKE_URL =
   "https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json/preview";
-
+  const dataColor = ["#FACFC9", "#5674AC"];
 
 const App = () => {
   const [region, setRegion] = useState({
@@ -115,11 +115,18 @@ const App = () => {
             title={`${site.sna} ${site.sbi}/${site.tot}`}
             description={site.ar}
           >
-            <Image
-              source={require("./imgs/ubike.png")}
-              style={{ width: 26, height: 28 }}
-              resizeMode="contain"
-            />
+              <VictoryPie
+                width={150}
+                data={[
+                  {x:site.tot-site.sbi,y:100-(site.sbi/site.tot)*100},
+                  
+                  {x:site.sbi,y:(site.sbi/site.tot)*100},
+                  
+                ]}
+                labelRadius={10}
+                innerRadius={10}
+                colorScale={dataColor}
+                />
           </Marker>
         ))}
       </MapView>
